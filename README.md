@@ -10,6 +10,10 @@ It runs entirely in the browser. No account, no API key, no server, and the
 CSV is never uploaded anywhere. Hosting is GitHub Pages, so it costs nothing
 to run and there is no bill that can arrive later.
 
+It can also read the leads straight from a Google Sheet that your website
+form fills in, so a lead that came in this morning is a draft by lunchtime
+with nobody exporting anything. See [the loop](#the-whole-loop).
+
 ## The problem it solves
 
 A remodeling lead that gets a reply within an hour is worth several times one
@@ -76,6 +80,36 @@ $ npm run parity
 Parity OK: 8 drafts identical in TypeScript and Python (2 urgent).
 ```
 
+## The whole loop
+
+The tool works fine on its own: export leads, drop the file in, copy the
+drafts. Connecting a sheet removes the export step.
+
+```
+your website form ─┬─ email to you            (Web3Forms, unchanged)
+                   └─ a row in your sheet     (a Google Apps Script)
+                                ↓
+                        Google Sheet
+                                ↓
+                   this tool drafts the replies
+```
+
+The middle piece is `tools/sheet-endpoint/Code.gs`, an Apps Script that runs
+in your own Google account. It appends a row when the form is submitted, and
+hands the sheet back to this tool when asked with the right key. Setup is
+about ten minutes: [tools/sheet-endpoint/README.md](tools/sheet-endpoint/README.md).
+
+Two things worth knowing before you wire it up:
+
+- **The email path does not change.** The form still posts to Web3Forms and
+  still emails you, with scripting on or off. The sheet row is a second,
+  best-effort copy that cannot fail a submission.
+- **The read key is a lock, not a vault.** It never enters this repository or
+  the built site, and it lives only in the browser you paste it into. But it
+  is pasted into a browser, so for a real client with real homeowners on the
+  sheet, keep the sheet private and download CSV by hand instead. The setup
+  guide spells out both modes.
+
 ## Your own CSV
 
 Column names are matched loosely. Case, spaces, underscores, hyphens and dots
@@ -141,11 +175,13 @@ index.html                       the shell, plus a real message when JS is off
 src/main.ts                      the single-screen UI
 src/lib/drafts.ts                the draft engine, and the source of truth
 src/lib/csv.ts                   parsing, header aliasing, and CSV export
+src/lib/sheet.ts                 reading a connected Google Sheet
 src/lib/ui.ts                    clipboard, downloads, escaping, dates
 tools/lead_followup_drafter.py   the CLI, mirroring the engine
 tools/test_lead_followup_drafter.py
 tests/                           TypeScript tests
 scripts/check-parity.mjs         proves the two engines agree
+tools/sheet-endpoint/            the Apps Script that fills the sheet
 public/sample_leads.csv          eight fictional leads, two of them urgent
 ```
 
