@@ -29,9 +29,29 @@
  * real client's real homeowners, see the note in tools/sheet-endpoint/README.md
  * about keeping the sheet private and exporting CSV by hand instead.
  *
- * Setup is in tools/sheet-endpoint/README.md. Nothing in this file needs
- * editing except SHEET_NAME.
+ * Setup is in tools/sheet-endpoint/README.md. The only line you may need to
+ * edit is SPREADSHEET_ID, and only if you create this as a standalone
+ * script rather than from inside the sheet.
  */
+
+/**
+ * Which spreadsheet to write to.
+ *
+ * Leave this empty when the script lives inside the sheet itself, which is
+ * what Extensions > Apps Script gives you: the script is bound to that sheet
+ * and finds it on its own.
+ *
+ * Fill it in when the script is a standalone project created at
+ * script.google.com. Paste the long id out of the sheet's own URL, the part
+ * between /d/ and /edit:
+ *
+ *   https://docs.google.com/spreadsheets/d/THIS_PART_HERE/edit
+ *
+ * Both routes end up identical. The standalone one exists because the
+ * Extensions menu is desktop only, so it is the way in from a phone or from
+ * a Google account whose admin has hidden that menu.
+ */
+const SPREADSHEET_ID = '';
 
 /** The tab the leads are written to. Created on first write if missing. */
 const SHEET_NAME = 'Leads';
@@ -170,7 +190,7 @@ function doGet(event) {
  * @return {Sheet} The leads tab.
  */
 function _sheet() {
-  const book = SpreadsheetApp.getActiveSpreadsheet();
+  const book = _book();
   let sheet = book.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = book.insertSheet(SHEET_NAME);
@@ -180,6 +200,30 @@ function _sheet() {
     sheet.setFrozenRows(1);
   }
   return sheet;
+}
+
+/**
+ * Get the spreadsheet, whichever way this script was set up.
+ *
+ * A bound script has an active spreadsheet and needs no id. A standalone one
+ * has no active spreadsheet at all, and calling it from a web request would
+ * return null rather than throw, so this is checked rather than assumed: a
+ * silent null here would look exactly like a lead that vanished.
+ *
+ * @return {Spreadsheet} The lead spreadsheet.
+ * @throws {Error} If neither route is configured.
+ */
+function _book() {
+  if (SPREADSHEET_ID) {
+    return SpreadsheetApp.openById(SPREADSHEET_ID);
+  }
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  if (!active) {
+    throw new Error(
+      'No spreadsheet. This script is not bound to a sheet, so set SPREADSHEET_ID to the id from your sheet URL.',
+    );
+  }
+  return active;
 }
 
 /**

@@ -26,9 +26,27 @@ your spreadsheet, and there is no third-party service in between holding it.
 New Google Sheet, name it something like `Ridgeview leads`. Leave it empty.
 The script writes the header row the first time a lead arrives.
 
-**2. Open the script editor.**
-In the sheet: **Extensions → Apps Script**. Delete whatever is in `Code.gs`
-and paste in the contents of the `Code.gs` next to this file. Save.
+**2. Open the script editor.** Either route works, and they end up identical.
+
+*From inside the sheet:* **Extensions → Apps Script**. Delete whatever is in
+`Code.gs`, paste in the contents of the `Code.gs` next to this file, and save.
+Leave `SPREADSHEET_ID` empty: a script opened this way is attached to the
+sheet and finds it by itself.
+
+*As a standalone project:* go to [script.google.com](https://script.google.com)
+and click **New project**. Paste the same file in. Then set `SPREADSHEET_ID`
+near the top to the long id in your sheet's URL, the part between `/d/` and
+`/edit`:
+
+```
+https://docs.google.com/spreadsheets/d/1t4ufoj9CVSaYNkb..../edit
+                                       ^^^^^^^^^^^^^^^^^^^ this
+```
+
+Use the standalone route if there is no **Extensions** menu. The Apps Script
+editor is desktop only, so the menu is absent in the Google Sheets mobile app
+and in a phone browser, and some Workspace accounts have it hidden by an
+admin. Either way, open script.google.com on a computer.
 
 **3. Make a read key.**
 In the editor's function dropdown pick **setUpReadKey**, then **Run**. Google
@@ -123,6 +141,10 @@ change it, deploy a new version.
 **The tool says the read key is wrong.**
 The `?key=` on the end does not match what `setUpReadKey` stored. Run
 `setUpReadKey` again and reconnect with the new key.
+
+**The Executions log says there is no spreadsheet.**
+The script is standalone but `SPREADSHEET_ID` is still empty. Set it to the id
+from your sheet URL, save, and deploy a new version.
 
 **Leads stop appearing after you changed the columns.**
 `COLUMNS` in `Code.gs` defines the sheet layout on write, and the header row
