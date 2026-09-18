@@ -1,0 +1,28 @@
+{
+  "name": "lead-followup",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Same-day SMS and email follow-up drafts from a lead CSV. Runs entirely in the browser.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:ts && npm run test:py && npm run parity",
+    "test:ts": "node --test --experimental-strip-types tests/*.test.ts",
+    "test:py": "python3 -m unittest discover -s tools -t tools -p \"test_*.py\"",
+    "parity": "node scripts/check-parity.mjs"
+  },
+  "dependencies": {
+    "papaparse": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.3.15",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.11"
+  }
+}

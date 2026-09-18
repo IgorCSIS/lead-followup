@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Focus has to be obvious on a dark surface and must not rely on color
+     alone, so it is a ring plus an offset. */
+  :focus-visible {
+    outline: 2px solid theme("colors.ember.400");
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background-color: theme("colors.ember.500");
+    color: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Every interactive target clears 44px so it is usable on a phone, which
+     is where a contractor will actually see this during a meeting. */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5
+           text-sm font-semibold transition-colors;
+    min-height: 2.75rem;
+  }
+
+  .btn-primary {
+    @apply bg-ember-500 text-ink-950 hover:bg-ember-400;
+  }
+
+  .btn-ghost {
+    @apply border border-ink-600 text-sand-200 hover:border-ember-400 hover:text-ember-400;
+  }
+
+  .btn-quiet {
+    @apply border border-ink-700 bg-ink-900 text-sand-400 hover:border-ink-600 hover:text-sand-200;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-ink-600 bg-ink-950 px-3 py-2.5 text-sm text-sand-50
+           placeholder:text-sand-400/60 focus:border-ember-400 focus:outline-none;
+    min-height: 2.75rem;
+  }
+
+  .label {
+    @apply mb-1.5 block font-mono text-[0.68rem] uppercase tracking-[0.14em] text-sand-400;
+  }
+
+  .card {
+    @apply rounded-card border border-ink-700 bg-ink-800;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono
+           text-[0.65rem] uppercase tracking-[0.12em];
+  }
+
+  /* The copy button flips to a confirmation for a moment. Showing the result
+     on the control itself is clearer than a toast that appears elsewhere. */
+  .copied {
+    @apply !border-good !text-good;
+  }
+}
