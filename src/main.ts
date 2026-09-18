@@ -65,8 +65,11 @@ function header(): string {
       <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-4">
         <div class="flex items-center gap-2.5">
           <svg viewBox="0 0 32 32" class="h-7 w-7" aria-hidden="true">
-            <path d="M6 11h18M6 16h13M6 21h8" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-            <circle cx="25" cy="21" r="2.5" fill="#F59E0B"/>
+            <rect width="32" height="32" rx="7" fill="#0B1220"/>
+            <rect x="6.5" y="7.6" width="19" height="2.8" rx="1.4" fill="#F8FAFC"/>
+            <rect x="6.5" y="13.3" width="12.5" height="2.8" rx="1.4" fill="#8FA3BC"/>
+            <rect x="6.5" y="19" width="6.5" height="2.8" rx="1.4" fill="#8FA3BC"/>
+            <path d="M17.4 17.1h7.4a2.3 2.3 0 0 1 2.3 2.3v3.5a2.3 2.3 0 0 1-2.3 2.3h-3.1l-3.2 2.4a.5.5 0 0 1-.8-.4v-2h-.3a2.3 2.3 0 0 1-2.3-2.3v-3.5a2.3 2.3 0 0 1 2.3-2.3z" fill="#F59E0B"/>
           </svg>
           <span class="font-semibold text-sand-50">Lead Follow-up</span>
         </div>
@@ -84,8 +87,8 @@ function hero(): string {
       </h1>
       <p class="mt-4 max-w-2xl text-base leading-relaxed text-sand-200">
         Drop in the leads your website captured. Get a ready-to-send text and email for each one,
-        with the people who need a reply today at the top. The contractor who answers first books
-        the job.
+        with the people who need a reply today at the top. Whoever answers first is usually the
+        one who gets the walkthrough.
       </p>
       <p class="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-sand-400">
         ${

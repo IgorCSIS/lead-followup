@@ -4,32 +4,130 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#070E18" />
-    <title>Lead Follow-up | Same-day drafts from a lead CSV</title>
+
+    <title>Free Lead Follow-Up Tool: CSV to SMS and Email Drafts</title>
     <meta
       name="description"
-      content="Turn a lead CSV into same-day SMS and email follow-up drafts. Runs entirely in your browser. No account, no API keys, nothing uploaded."
+      content="Upload a CSV of sales leads and get a ready-to-send text and email for each one. Free, runs in your browser, no account and nothing uploaded."
     />
+    <meta name="author" content="Igor Lima" />
+    <link rel="canonical" href="https://igorcsis.github.io/lead-followup/" />
+
+    <!--
+      Absolute URLs on purpose. Scrapers do not resolve relative paths, and the
+      Vite base of /lead-followup/ makes that easy to get wrong.
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Lead Follow-up" />
+    <meta property="og:title" content="Lead Follow-up: CSV of leads in, texts and emails out" />
+    <meta
+      property="og:description"
+      content="Free browser tool that turns a CSV of sales leads into ready-to-send SMS and email follow-ups. Nothing is uploaded. Ships a Python CLI too."
+    />
+    <meta property="og:url" content="https://igorcsis.github.io/lead-followup/" />
+    <meta property="og:image" content="https://igorcsis.github.io/lead-followup/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="A finished text message to a lead, with a red Reply today badge and a character count."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Lead Follow-up: CSV of leads in, texts and emails out" />
+    <meta
+      name="twitter:description"
+      content="Free browser tool that turns a CSV of sales leads into ready-to-send SMS and email follow-ups. Nothing is uploaded. Ships a Python CLI too."
+    />
+    <meta name="twitter:image" content="https://igorcsis.github.io/lead-followup/og-image.png" />
+
     <link rel="icon" type="image/svg+xml" href="/lead-followup/favicon.svg" />
+
     <!--
       No web fonts on purpose. The page claims a homeowner's details never
       leave the browser, and a font request would still be a request going out
       while that list is open. System fonts make the claim literally true: once
       the page is loaded it makes no network calls at all.
     -->
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Lead Follow-up",
+        "url": "https://igorcsis.github.io/lead-followup/",
+        "description": "A free browser tool that turns a CSV of sales leads into ready-to-send SMS and email follow-up drafts, urgent leads first. The file is parsed in the browser and never uploaded.",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript. Runs in any modern browser.",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "license": "https://opensource.org/licenses/MIT",
+        "author": {
+          "@type": "Person",
+          "name": "Igor Lima",
+          "url": "https://igorcsis.github.io/niftyai-portfolio/"
+        },
+        "sameAs": "https://github.com/IgorCSIS/lead-followup",
+        "featureList": [
+          "Parses a lead CSV in the browser with loose header matching",
+          "Writes one SMS and one email draft per lead",
+          "Sorts leads whose timeline is urgent to the top",
+          "Copies any draft to the clipboard in one click",
+          "Rewrites every draft from your own company name, owner and phone",
+          "Optional read from a Google Sheet your website form fills in",
+          "Matching Python command line version"
+        ],
+        "image": "https://igorcsis.github.io/lead-followup/og-image.png"
+      }
+    </script>
   </head>
   <body class="bg-ink-950 text-sand-200 antialiased">
-    <div id="app"></div>
+    <!--
+      The heading and intro below are the page's real content, repeated word
+      for word from hero() in src/main.ts. main.ts replaces this the moment it
+      boots, so nobody sees it twice and nothing is hidden from anyone.
+
+      It is here because without it this document contains no text at all. A
+      link pasted into Slack, LinkedIn or a text message is unfurled by a
+      scraper that does not run JavaScript, and what it used to find was the
+      noscript notice below, so every shared link announced itself as "This
+      tool needs JavaScript".
+
+      If you change the wording in hero(), change it here too. Showing a
+      crawler something different from a person is cloaking, and the point of
+      this block is the opposite: to show them the same thing.
+    -->
+    <div id="app">
+      <section class="mx-auto max-w-5xl px-5 pt-10 sm:pt-14">
+        <h1 class="text-3xl font-bold leading-tight tracking-tight text-sand-50 sm:text-4xl">
+          Same-day follow-ups from a lead CSV
+        </h1>
+        <p class="mt-4 max-w-2xl text-base leading-relaxed text-sand-200">
+          Drop in the leads your website captured. Get a ready-to-send text and email for each one,
+          with the people who need a reply today at the top. Whoever answers first is usually the
+          one who gets the walkthrough.
+        </p>
+        <p class="mt-3 text-sm text-sand-400">
+          No account, no API keys, and your file is never uploaded.
+        </p>
+      </section>
+    </div>
+
     <noscript>
       <div
         style="
           max-width: 34rem;
-          margin: 4rem auto;
+          margin: 2rem auto 4rem;
           padding: 0 1.25rem;
           font-family: system-ui, sans-serif;
           line-height: 1.6;
         "
       >
-        <h1 style="font-size: 1.5rem; margin: 0 0 0.75rem">This tool needs JavaScript</h1>
+        <h2 style="font-size: 1.25rem; margin: 0 0 0.75rem; color: #f8fafc">
+          The tool itself needs JavaScript
+        </h2>
         <p style="margin: 0 0 1rem; color: #b8bfcc">
           That is not a tracking script. The whole tool runs in your browser, which is how your
           lead list stays on your own machine instead of being uploaded to a server. With
@@ -41,6 +139,7 @@
         </p>
       </div>
     </noscript>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

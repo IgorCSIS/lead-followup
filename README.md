@@ -1,45 +1,83 @@
-# Lead Follow-up
+<p align="center">
+  <img src="assets/banner.svg" alt="Lead Follow-up: text and email drafts from a lead CSV. Nothing is uploaded, nothing is sent." width="880">
+</p>
 
-Turn a CSV of leads into same-day text and email drafts, one per lead, urgent
-ones first, with a copy button on each.
+# Lead Follow-up: CSV to same-day SMS and email drafts
 
-**Live tool:** https://igorcsis.github.io/lead-followup/
-**Where the leads come from:** https://igorcsis.github.io/ridgeview-remodeling-demo/
+A free tool that turns a CSV of leads into a ready-to-send text and email for
+each one, urgent leads first, with a copy button on every draft. It runs
+entirely in your browser: no account, no API key, and the file is never
+uploaded anywhere.
 
-It runs entirely in the browser. No account, no API key, no server, and the
-CSV is never uploaded anywhere. Hosting is GitHub Pages, so it costs nothing
-to run and there is no bill that can arrive later.
+It drafts, it never sends. A person reads each one and hits copy.
 
-It can also read the leads straight from a Google Sheet that your website
-form fills in, so a lead that came in this morning is a draft by lunchtime
-with nobody exporting anything. See [the loop](#the-whole-loop).
+**[Open the tool](https://igorcsis.github.io/lead-followup/)** &nbsp;·&nbsp;
+[The demo site that captures the leads](https://igorcsis.github.io/ridgeview-remodeling-demo/) &nbsp;·&nbsp;
+[MIT licensed](LICENSE)
+
+<p align="center">
+  <img src="assets/screenshot.png" alt="Eight drafted leads. The first is badged Reply today, showing a 135 of 160 character text message, an email subject and an email body, each with its own copy button." width="880">
+</p>
 
 ## The problem it solves
 
-A remodeling lead that gets a reply within an hour is worth several times one
-that gets a reply on Thursday. Contractors know this. They still miss it,
-because the leads arrive while they are on a roof, and by the time they sit
-down there are six of them and writing six replies from scratch is a job in
-itself.
+A homeowner filling in a quote form at 7am has usually filled in someone
+else's by 9. Whoever answers first is usually the one who gets the
+walkthrough. The contractor is not going to be that person, because the lead
+lands while they are on a roof with a nail gun in their hand and the phone is
+in the truck.
 
-So this does the writing. Drop the export in, get a text and an email for
-every lead, read them, fix anything that is off, send them yourself.
+By seven in the evening there are six of them, and each one wants a different
+thing: a leaking shower pan, a wall out of a galley kitchen, an ADU over the
+garage. Writing six replies that do not read like a form letter is its own
+evening's work, so it waits until Thursday.
+
+So this does the writing. Drop the export in, read what it wrote, fix anything
+that is off, send them yourself.
+
+## Try it in thirty seconds
+
+Nothing to install and nothing to sign up for.
+
+1. Open **[the tool](https://igorcsis.github.io/lead-followup/)**.
+2. Click **Use the sample leads**.
+3. Hit **Copy** on any draft.
+
+Eight fictional leads load, the two urgent ones sort to the top, and every
+draft is one click from your clipboard.
+
+## What you get for each lead
+
+- **A text message** naming the specific job, under the 160 character limit so
+  it arrives as one message rather than three, with a live character count.
+- **An email** with a subject line and a body that quotes the homeowner's own
+  words back to them.
+- **A Reply today badge** when the timeline says ASAP, as soon as possible,
+  emergency, immediately, or urgent. Those sort to the top.
+- **A copy button** on each of the three, because that is the entire
+  interaction.
 
 ## What it deliberately does not do
 
-- **It does not send anything.** No Twilio, no SMTP, no mail API. Every draft
-  is copied to the clipboard by a person who has read it. A tool that texts
-  homeowners on its own is one bad row away from an embarrassment, and the
-  contractor is the one whose name is on it.
-- **It does not call a language model.** The drafts come from templates chosen
-  by project type and timeline. That means no API key, no per-draft cost, no
-  rate limit, and the same lead always produces the same draft.
-- **It does not upload the CSV.** The file is read by the browser and parsed
-  in memory. There is no request to anything at runtime, which you can check
-  yourself in the network tab: the page loads, and then it goes quiet. The web
-  fonts were removed for the same reason.
+**It does not send anything.** No Twilio, no SMTP, no mail API, nothing
+scheduled. Every draft reaches a homeowner only after a person has read it and
+pressed Copy. A tool that texts homeowners on its own is one bad row away from
+an embarrassment, and it is the contractor's name on the message.
 
-## Running it
+**It does not call a language model.** The drafts come from templates picked by
+project type and timeline. No API key, no per-draft cost, no rate limit, no
+waiting on a response, and the same lead always produces the same draft.
+
+**It does not upload your CSV.** The browser reads the file and parses it in
+memory. After the page loads there are no network requests at all, which you
+can watch for yourself in the network tab: the page loads, and then it goes
+quiet. The web fonts were removed so that sentence is literally true rather
+than nearly true.
+
+What it will not do is the reason it is safe to hand to somebody. There is no
+account to create, no key to hold, and no bill that can arrive later.
+
+## Running it locally
 
 ```bash
 npm install
@@ -65,28 +103,38 @@ python tools/lead_followup_drafter.py --company "Your Co" --owner "You" --phone 
 Python 3.10 or newer, standard library only. No network calls, same as the web
 version.
 
-## Why there are two engines, and how they stay honest
+## Why there are two engines: TypeScript and Python parity
 
 `src/lib/drafts.ts` is the single source of truth for what a follow-up says.
-`tools/lead_followup_drafter.py` mirrors it.
+`tools/lead_followup_drafter.py` mirrors it, so the same drafts come out of a
+terminal with no browser and no Node involved.
 
-Two copies of the same wording will drift, so `scripts/check-parity.mjs` runs
-both engines over `public/sample_leads.csv` and compares every field of every
-draft. A difference of one character fails the build, and CI runs it on every
-push. Change a template in one place and the build tells you about the other.
+Two copies of the same wording will drift. One of them gets a better sentence
+and the other does not, and you find out months later when the demo says
+something different from the tool. So `scripts/check-parity.mjs` runs both
+engines over `public/sample_leads.csv` and compares every field of every draft.
+One character of difference fails the build, and CI runs it on every push.
 
 ```
 $ npm run parity
 Parity OK: 8 drafts identical in TypeScript and Python (2 urgent).
 ```
 
-## The whole loop
+Around it, 34 TypeScript tests and 38 Python tests. One is worth calling out:
+it builds a draft for every project type crossed with every timeline, using a
+first name long enough to be a worst case, and asserts each text lands inside
+the single-message limit. Carriers split anything longer, which looks careless
+on the contractor's end. A company name longer than the demo one can still push
+a draft over, so the tool shows the live count and flags the message instead of
+quietly cutting it short.
+
+## The whole loop: website form to Google Sheet to drafts
 
 The tool works fine on its own: export leads, drop the file in, copy the
 drafts. Connecting a sheet removes the export step.
 
 ```
-your website form ─┬─ email to you            (Web3Forms, unchanged)
+your website form ─┬─ email to you            (unchanged)
                    └─ a row in your sheet     (a Google Apps Script)
                                 ↓
                         Google Sheet
@@ -94,27 +142,24 @@ your website form ─┬─ email to you            (Web3Forms, unchanged)
                    this tool drafts the replies
 ```
 
-The middle piece is `tools/sheet-endpoint/Code.gs`, an Apps Script that runs
-in your own Google account. It appends a row when the form is submitted, and
-hands the sheet back to this tool when asked with the right key. Setup is
-about ten minutes: [tools/sheet-endpoint/README.md](tools/sheet-endpoint/README.md).
+The middle piece is `tools/sheet-endpoint/Code.gs`, an Apps Script that runs in
+your own Google account. Setup is about ten minutes:
+[tools/sheet-endpoint/README.md](tools/sheet-endpoint/README.md).
 
 Two things worth knowing before you wire it up:
 
-- **The email path does not change.** The form still posts to Web3Forms and
-  still emails you, with scripting on or off. The sheet row is a second,
-  best-effort copy that cannot fail a submission.
-- **The read key is a lock, not a vault.** It never enters this repository or
-  the built site, and it lives only in the browser you paste it into. But it
-  is pasted into a browser, so for a real client with real homeowners on the
-  sheet, keep the sheet private and download CSV by hand instead. The setup
-  guide spells out both modes.
+- **The email path does not change.** The form still emails you, with scripting
+  on or off. The sheet row is a second, best-effort copy that cannot fail a
+  submission.
+- **Write-only is the safer setup and it is two steps shorter.** Leave the read
+  key unset and nothing can read the sheet back. For a real client with real
+  homeowners on it, do that and download CSV by hand when you want drafts.
 
-## Your own CSV
+## Bringing your own CSV
 
 Column names are matched loosely. Case, spaces, underscores, hyphens and dots
-are ignored, and each field accepts several spellings, so a Web3Forms export,
-a hand-kept Google Sheet, and a CRM download all work without editing.
+are ignored, and each field accepts several spellings, so a Web3Forms export, a
+hand-kept Google Sheet, and a CRM download all work without editing.
 
 | Field | Headers it will match |
 | --- | --- |
@@ -131,57 +176,60 @@ a hand-kept Google Sheet, and a CRM download all work without editing.
 Anything it cannot match is reported on screen rather than silently dropped,
 and a row with no name, phone, or email is skipped and counted.
 
-A lead counts as urgent when its timeline says ASAP, as soon as possible,
-emergency, immediately, or urgent. Urgent leads sort to the top.
-
 ## White-labeling it
 
-The three fields at the top of the page (company, who it signs off as,
-callback number) rewrite every draft as you type. They default to the
-Ridgeview demo brand, which is a fictional company: the (619) 555-0180 number
-is a reserved 555 number and belongs to nobody.
-
-## The 30-second version, for showing someone
-
-1. Open the Ridgeview site, fill in the quote form, submit it.
-2. Open this tool, click **Use the sample leads**.
-3. Point at the two red **Reply today** badges. "Those two came in overnight.
-   They are the ones that turn into jobs if you get to them first."
-4. Click **Copy** on a text message and paste it into a phone.
-5. Change the company name at the top and watch all eight drafts rewrite.
-
-The point is not the software. The point is that the lead form and the
-follow-up are one system, and the second half is the half most contractors
-never build.
+The three fields at the top of the page, company, who it signs off as, and
+callback number, rewrite every draft as you type. They default to the Ridgeview
+demo brand, which is a fictional company: the (619) 555-0180 number is a
+reserved 555 number and belongs to nobody.
 
 ## Deploying your own copy
 
 1. Fork or clone, then push to a repository named `lead-followup`. If you name
    it something else, change `base` in `vite.config.ts` to match, or every
    asset will 404 in production.
-2. In the repository, go to **Settings → Pages** and set **Source** to
-   **GitHub Actions**.
-3. Push to `main`. The workflow in `.github/workflows/deploy.yml` runs the
-   tests and the parity check, builds, and deploys. If the tests fail, nothing
-   ships.
+2. **Settings → Pages**, set **Source** to **GitHub Actions**.
+3. Push to `main`. The workflow runs the tests and the parity check, builds,
+   and deploys. If the tests fail, nothing ships.
 
 There are no secrets to configure, because there is nothing to authenticate
 against.
 
-## Layout
+## The thirty second demo script
+
+No slides. Two browser tabs, and a phone if you have one.
+
+1. **Open the Ridgeview site and fill in the quote form in front of them.**
+   Submit it. "That is the part you already believe in. Here is the half
+   nobody builds."
+2. **Switch tabs and click Use the sample leads.** Eight leads, drafted.
+3. **Point at the two red Reply today badges.** "Those two said as soon as
+   possible. They sorted themselves to the top. Those are the two that turn
+   into jobs if you get there first."
+4. **Click Copy on a text and paste it into your phone.** Do not send it. "That
+   is one tap from going out, and it is under 160 characters, so it arrives as
+   one message and not three."
+5. **Type their company name into the field at the top.** All eight drafts
+   rewrite as you type, phone number and sign-off included.
+
+Then stop talking. The point is not the software. The point is that the lead
+form and the follow-up are one system, and the second half is the half most
+contractors never build.
+
+## What is in the repo
 
 ```
-index.html                       the shell, plus a real message when JS is off
+index.html                       the shell, the static heading, and the no-JS notice
 src/main.ts                      the single-screen UI
 src/lib/drafts.ts                the draft engine, and the source of truth
 src/lib/csv.ts                   parsing, header aliasing, and CSV export
 src/lib/sheet.ts                 reading a connected Google Sheet
 src/lib/ui.ts                    clipboard, downloads, escaping, dates
 tools/lead_followup_drafter.py   the CLI, mirroring the engine
-tools/test_lead_followup_drafter.py
+tools/sheet-endpoint/            the Apps Script that fills the sheet
 tests/                           TypeScript tests
 scripts/check-parity.mjs         proves the two engines agree
-tools/sheet-endpoint/            the Apps Script that fills the sheet
+assets/                          logo, banner, and the social card source
 public/sample_leads.csv          eight fictional leads, two of them urgent
 ```
 
@@ -200,4 +248,5 @@ The 555 numbers are reserved for exactly this.
 
 MIT. See [LICENSE](LICENSE).
 
-Built by Igor Lima. https://igorcsis.github.io/niftyai-portfolio/
+Built by **Igor Lima**. Python automation for East County and San Diego
+businesses. Portfolio: https://igorcsis.github.io/niftyai-portfolio/
