@@ -281,6 +281,45 @@ function _json(value) {
 }
 
 /**
+ * Check the setup without writing a lead, and log what it found.
+ *
+ * Run this once from the editor before deploying. It does three jobs in one
+ * click: it triggers Google's authorization prompt, so the consent screen is
+ * out of the way before any real submission depends on it; it proves
+ * SPREADSHEET_ID points at a sheet this script can actually open; and it
+ * creates the header row, so the first real lead lands in a sheet that
+ * already has its columns.
+ *
+ * It writes no fake data. A test lead in a lead sheet is a thing somebody
+ * eventually tries to phone.
+ *
+ * Doing this before deploying matters: a wrong id or a missing authorization
+ * shows up here as a clear line in the log, whereas after deployment the same
+ * mistakes are silent. The form would keep working, the visitor would still
+ * reach the thank-you page, and rows simply would not appear.
+ */
+function runSelfTest() {
+  const book = _book();
+  console.log('Spreadsheet: ' + book.getName());
+  console.log('URL: ' + book.getUrl());
+
+  const sheet = _sheet();
+  const leadCount = Math.max(0, sheet.getLastRow() - 1);
+  console.log('Tab "' + SHEET_NAME + '" is ready with ' + COLUMNS.length + ' columns.');
+  console.log('Leads currently stored: ' + leadCount);
+
+  const readKey = PropertiesService.getScriptProperties().getProperty(READ_KEY_PROPERTY);
+  console.log(
+    readKey
+      ? 'A read key is set, so the drafting tool can read this sheet.'
+      : 'No read key set, so this endpoint is write only. That is the safer setting, ' +
+          'and the right one unless you plan to connect the drafting tool. Run setUpReadKey to change it.',
+  );
+
+  console.log('Self test passed. Deploy it as a web app and you are done.');
+}
+
+/**
  * Generate a read key and store it, printing it once to the log.
  *
  * Run this by hand from the Apps Script editor during setup. It is the only

@@ -20,6 +20,21 @@ asked with the right key.
 It runs in **your** Google account. The lead data goes from your website to
 your spreadsheet, and there is no third-party service in between holding it.
 
+## Two ways to run this, and the shorter one is safer
+
+**Write only.** The form fills the sheet. When you want drafts you use
+**File → Download → CSV** and drop the file into the tool. No key is ever
+created, so there is nothing that can read the sheet and nothing to leak.
+This is the right setting for real customers, and it is steps 1, 2, 4 and 5
+below: skip step 3 entirely.
+
+**Write and read.** The same, plus the drafting tool pulls the sheet directly
+and you never touch a file. Costs one key, which lives in the browser you
+paste it into. Right for a demo full of invented leads. See the read-and-write
+warning further down before using it on a real client's sheet.
+
+You can start write only and add the key later without redoing anything.
+
 ## Setup, about ten minutes
 
 **1. Make the spreadsheet.**
@@ -48,7 +63,7 @@ editor is desktop only, so the menu is absent in the Google Sheets mobile app
 and in a phone browser, and some Workspace accounts have it hidden by an
 admin. Either way, open script.google.com on a computer.
 
-**3. Make a read key.**
+**3. Make a read key.** *Skip this for a write-only setup.*
 In the editor's function dropdown pick **setUpReadKey**, then **Run**. Google
 will ask you to authorize the script the first time, and it will warn you
 that the app is not verified. That warning is about scripts in general, not
@@ -57,6 +72,16 @@ Choose **Advanced → Go to (your project)** and allow it.
 
 Open **Execution log** and copy the key it printed. It is shown once. If you
 lose it, run `setUpReadKey` again and the old key stops working.
+
+**3b. Run the self test.**
+In the function dropdown pick **runSelfTest**, then **Run**. This is where
+Google asks you to authorize the script, so get it out of the way now rather
+than discovering it when a real lead fails to land. The log tells you which
+spreadsheet it opened and whether the tab is ready. It writes no test data.
+
+If it reports the wrong spreadsheet, `SPREADSHEET_ID` is wrong. Fix it before
+deploying: after deployment the same mistake is silent, because the form keeps
+working and the visitor still reaches the thank-you page while no rows appear.
 
 **4. Deploy it as a web app.**
 **Deploy → New deployment → Web app**.
