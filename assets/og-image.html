@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      Source for public/og-image.png, the 1200x630 card shown when the link is
+      pasted into Slack, LinkedIn, or a text message.
+
+      It is HTML rather than SVG because this gets rasterized once, so it can
+      use real layout instead of hand-placed coordinates. Regenerate with:
+
+        node scripts/make-og-image.mjs
+
+      which needs a Chromium and is not part of the build. The PNG is
+      committed, so nobody needs either to ship the site.
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        width: 1200px; height: 630px; display: flex; flex-direction: column;
+        justify-content: space-between; padding: 72px 76px; background: #070E18;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #F8FAFC;
+      }
+      .top { display: flex; align-items: center; gap: 22px; }
+      .top img { width: 72px; height: 72px; }
+      .top span { font-size: 40px; font-weight: 600; color: #CBD5E1; letter-spacing: -0.5px; }
+      h1 { font-size: 58px; font-weight: 700; line-height: 1.1; letter-spacing: -1.6px; max-width: 560px; }
+      .mid { display: flex; align-items: center; justify-content: space-between; gap: 44px; }
+      .sub { font-size: 28px; color: #8FA3BC; margin-top: 22px; max-width: 540px; line-height: 1.4; }
+      .card {
+        width: 404px; flex: none; background: #111C2E; border: 1px solid #1B2A40;
+        border-radius: 16px; padding: 26px 28px;
+      }
+      .chip {
+        display: inline-block; background: #2B1417; color: #F87171; font-size: 15px;
+        font-weight: 600; letter-spacing: 0.8px; padding: 7px 14px; border-radius: 999px;
+      }
+      .who { font-size: 23px; font-weight: 600; margin: 16px 0 10px; }
+      .sms { font-size: 18px; line-height: 1.5; color: #CBD5E1; }
+      .count { font-size: 16px; color: #8FA3BC; text-align: right; margin-top: 14px; }
+      .bottom { display: flex; align-items: center; justify-content: space-between; }
+      .url { font-size: 26px; color: #F59E0B; font-weight: 600; }
+      .facts { font-size: 23px; color: #8FA3BC; }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <img src="logo.svg" alt="" />
+      <span>Lead Follow-up</span>
+    </div>
+
+    <div class="mid">
+      <div>
+        <h1>Every lead gets a reply. Urgent ones first.</h1>
+        <p class="sub">Drop in a CSV. Copy out a text and an email for each lead.</p>
+      </div>
+      <div class="card">
+        <span class="chip">REPLY TODAY</span>
+        <div class="who">Dan Whitfield</div>
+        <div class="sms">Hi Dan, it's Marcus at Ridgeview Remodeling about your bathroom. I can come take a look tomorrow if that works. What days work for you?</div>
+        <div class="count">135/160</div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <span class="url">igorcsis.github.io/lead-followup</span>
+      <span class="facts">Free. No account. Nothing uploaded.</span>
+    </div>
+  </body>
+</html>
