@@ -180,10 +180,17 @@ export function draftSms(lead: Lead, business: Business): string {
   );
 }
 
-/** Draft the email subject line. */
+/**
+ * Draft the email subject line.
+ *
+ * Leads with "Following up" rather than the project, because that is what the
+ * homeowner is looking for in a crowded inbox two days after they filled in a
+ * form. The separator is a middle dot, never an em dash: the subject is
+ * pasted into mail clients and phones that render dashes inconsistently.
+ */
 export function draftSubject(lead: Lead, business: Business): string {
   const project = lead.projectType.trim() || "project";
-  return `Your ${project.toLowerCase()} project, from ${business.companyName}`;
+  return `Following up on your ${project.toLowerCase()} \u00b7 ${business.companyName}`;
 }
 
 /**

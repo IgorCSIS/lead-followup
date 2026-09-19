@@ -133,12 +133,20 @@ test("the email is signed by the business, with its callback number", () => {
 test("the subject names the project, and says project when there is none", () => {
   assert.equal(
     draftSubject(lead({ projectType: "Kitchen remodel" }), DEMO_BUSINESS),
-    "Your kitchen remodel project, from Ridgeview Remodeling",
+    "Following up on your kitchen remodel \u00b7 Ridgeview Remodeling",
   );
   assert.equal(
     draftSubject(lead({ projectType: "" }), DEMO_BUSINESS),
-    "Your project project, from Ridgeview Remodeling",
+    "Following up on your project \u00b7 Ridgeview Remodeling",
   );
+});
+
+test("the subject separator is a middle dot, never a dash", () => {
+  // Mail clients and phones render em and en dashes inconsistently, and the
+  // house style bans them in anything a homeowner reads.
+  const subject = draftSubject(lead(), DEMO_BUSINESS);
+  assert.match(subject, /\u00b7/);
+  assert.doesNotMatch(subject, /[\u2013\u2014]/);
 });
 
 test("white-labeling replaces every mention of the demo business", () => {

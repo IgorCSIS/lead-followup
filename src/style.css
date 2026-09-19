@@ -71,9 +71,50 @@
            text-[0.65rem] uppercase tracking-[0.12em];
   }
 
+  /* Copy buttons keep the full 44px height of .btn and only tighten
+     horizontally, so the touch target survives while three of them on one
+     card still read as secondary to the draft itself. */
+  .btn-copy {
+    @apply px-3 text-xs;
+  }
+
   /* The copy button flips to a confirmation for a moment. Showing the result
-     on the control itself is clearer than a toast that appears elsewhere. */
+     on the control itself is clearer than a toast that appears elsewhere.
+     A filled state rather than a colour swap on the text, because the old
+     version changed a 12px label from grey to green and people reported not
+     seeing it at all. This one also has to survive being applied over
+     .btn-primary, which is why it sets background, text and border. */
   .copied {
-    @apply !border-good !text-good;
+    @apply !border-good !bg-good !text-ink-950;
+  }
+
+  .copy-failed {
+    @apply !border-warn !bg-warn !text-ink-950;
+  }
+
+  /* The drop zone is the main event on an empty page, so it is given room
+     rather than being a thin dashed strip. */
+  .drop-zone {
+    @apply flex flex-col items-center rounded-card border-2 border-dashed border-ink-600
+           bg-ink-900/40 px-5 py-6 text-center transition-colors duration-150;
+    min-height: 180px;
+  }
+
+  @screen sm {
+    .drop-zone {
+      @apply py-10;
+      min-height: 220px;
+    }
+  }
+
+  .drop-zone:hover {
+    @apply border-sand-400/50 bg-ink-900/70;
+  }
+
+  /* Dragging a file over it is the one moment the zone should look active,
+     so it gets the accent colour and a ring rather than a border tint alone. */
+  .drop-zone.is-dragging {
+    @apply border-ember-400 bg-ember-500/10;
+    box-shadow: 0 0 0 4px theme("colors.ember.500" / 20%);
   }
 }

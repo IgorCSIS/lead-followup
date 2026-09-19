@@ -217,12 +217,19 @@ class TestDraftWriter(unittest.TestCase):
         """A blank project type still produces a readable subject."""
         self.assertEqual(
             self._writer.draft_subject(_lead(project_type='Kitchen remodel')),
-            'Your kitchen remodel project, from Ridgeview Remodeling',
+            'Following up on your kitchen remodel \u00b7 Ridgeview Remodeling',
         )
         self.assertEqual(
             self._writer.draft_subject(_lead(project_type='')),
-            'Your project project, from Ridgeview Remodeling',
+            'Following up on your project \u00b7 Ridgeview Remodeling',
         )
+
+    def test_the_subject_separator_is_a_middle_dot_never_a_dash(self) -> None:
+        """Mail clients render em and en dashes inconsistently."""
+        subject = self._writer.draft_subject(_lead())
+        self.assertIn('\u00b7', subject)
+        self.assertNotIn('\u2013', subject)
+        self.assertNotIn('\u2014', subject)
 
     def test_white_labeling_replaces_every_mention_of_the_demo_business(self) -> None:
         """Nothing about Ridgeview may survive into another company's drafts."""
@@ -418,7 +425,7 @@ class TestDraft(unittest.TestCase):
         text = str(draft)
         self.assertIn('REPLY TODAY', text)
         self.assertIn('TEXT (', text)
-        self.assertIn('EMAIL: Your kitchen remodel project', text)
+        self.assertIn('EMAIL: Following up on your kitchen remodel', text)
 
     def test_a_draft_cannot_be_edited_after_it_is_built(self) -> None:
         """The text a caller inspects is the text that was generated."""

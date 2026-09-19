@@ -810,13 +810,19 @@ class DraftWriter:
         lead : Lead
             The lead being replied to.
 
+        Leads with "Following up" rather than the project, because that is
+        what the homeowner is looking for in a crowded inbox two days after
+        they filled in a form. The separator is a middle dot, never an em
+        dash: the subject is pasted into mail clients and phones that render
+        dashes inconsistently.
+
         Returns
         -------
         str
             A subject naming the project and the company.
         """
         project = lead.project_type or 'project'
-        return f'Your {project.lower()} project, from {self._business.company_name}'
+        return f'Following up on your {project.lower()} \u00b7 {self._business.company_name}'
 
     def draft_email(self, lead: Lead) -> str:
         """Draft the longer email reply.

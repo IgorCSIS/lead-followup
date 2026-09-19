@@ -50,8 +50,8 @@ draft is one click from your clipboard.
 
 - **A text message** naming the specific job, under the 160 character limit so
   it arrives as one message rather than three, with a live character count.
-- **An email** with a subject line and a body that quotes the homeowner's own
-  words back to them.
+- **An email** subject that leads with "Following up on your ...", and a body
+  that quotes the homeowner's own words back to them.
 - **A Reply today badge** when the timeline says ASAP, as soon as possible,
   emergency, immediately, or urgent. Those sort to the top.
 - **A copy button** on each of the three, because that is the entire
