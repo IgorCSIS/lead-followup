@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-label="One CSV runs through two independently written engines and a checker compares all fifteen fields of all eight drafts, so any difference fails the build.">
+  <title>How parity is proved</title>
+  <desc>The sample CSV feeds a TypeScript engine and a Python engine in parallel. A checker compares nine lead fields and six draft fields across all eight drafts. One differing character exits non-zero.</desc>
+
+  <defs>
+    <marker id="lf-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2A3D57"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="420" rx="16" fill="#070E18"/>
+  <rect x="0.5" y="0.5" width="1199" height="419" rx="15.5" fill="none" stroke="#1B2A40"/>
+
+  <text x="48" y="42" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#F8FAFC">Two engines, written separately, checked against each other on every build.</text>
+  <text x="48" y="66" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#8FA3BC">The browser tool and the command line tool do not share code. They share a test.</text>
+
+  <g transform="translate(48 156)">
+    <rect width="230" height="96" rx="10" fill="#111C2E" stroke="#1B2A40"/>
+    <text x="16" y="26" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#8FA3BC" letter-spacing="0.06em">ONE INPUT</text>
+    <text x="16" y="50" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#F8FAFC">public/sample_leads.csv</text>
+    <text x="16" y="70" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#8FA3BC">8 leads, 2 of them urgent</text>
+    <text x="16" y="86" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#8FA3BC">9 columns per row</text>
+  </g>
+
+  <g stroke="#2A3D57" stroke-width="2" fill="none" marker-end="url(#lf-a)">
+    <path d="M278 188 C 318 188, 326 140, 366 140"/>
+    <path d="M278 220 C 318 220, 326 268, 366 268"/>
+    <path d="M674 140 C 714 140, 722 188, 762 188"/>
+    <path d="M674 268 C 714 268, 722 220, 762 220"/>
+    <path d="M962 204 H1006"/>
+  </g>
+
+  <g transform="translate(374 106)">
+    <rect width="300" height="68" rx="10" fill="#111C2E" stroke="#1B2A40"/>
+    <text x="16" y="26" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#F59E0B">TypeScript</text>
+    <text x="16" y="46" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#F8FAFC">src/lib/drafts.ts</text>
+    <text x="16" y="60" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#8FA3BC">what the browser tool runs</text>
+  </g>
+
+  <g transform="translate(374 234)">
+    <rect width="300" height="68" rx="10" fill="#111C2E" stroke="#1B2A40"/>
+    <text x="16" y="26" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#F59E0B">Python</text>
+    <text x="16" y="46" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#F8FAFC">tools/lead_followup_drafter.py</text>
+    <text x="16" y="60" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#8FA3BC">what the terminal version runs</text>
+  </g>
+
+  <g transform="translate(770 156)">
+    <rect width="192" height="96" rx="10" fill="#111C2E" stroke="#1B2A40"/>
+    <text x="16" y="26" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#8FA3BC" letter-spacing="0.06em">COMPARES</text>
+    <text x="16" y="50" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#F8FAFC">15 fields</text>
+    <text x="16" y="68" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#8FA3BC">9 lead, 6 draft</text>
+    <text x="16" y="86" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#8FA3BC">across all 8 drafts</text>
+  </g>
+
+  <g transform="translate(1014 156)">
+    <rect width="138" height="96" rx="10" fill="#111C2E" stroke="#F59E0B" stroke-opacity="0.45"/>
+    <text x="16" y="34" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#F59E0B">Parity OK</text>
+    <text x="16" y="56" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#8FA3BC">or exit 1 with</text>
+    <text x="16" y="72" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#8FA3BC">both values</text>
+    <text x="16" y="88" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#8FA3BC">printed</text>
+  </g>
+
+  <rect x="48" y="326" width="1104" height="62" rx="9" fill="#111C2E" stroke="#1B2A40"/>
+  <text x="66" y="348" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#F8FAFC">Why bother writing the same thing twice</text>
+  <text x="66" y="368" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#8FA3BC">A contractor who prefers a terminal gets the same wording as one who uses the browser. Without the check, the two would drift the first time</text>
+  <text x="66" y="382" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#8FA3BC">a template changed, and nobody would notice until a homeowner got a different message than the one that was reviewed.</text>
+</svg>

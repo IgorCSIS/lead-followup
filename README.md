@@ -2,6 +2,14 @@
   <img src="assets/banner.svg" alt="Lead Follow-up: text and email drafts from a lead CSV. Nothing is uploaded, nothing is sent." width="880">
 </p>
 
+<p align="center">
+  <a href="https://github.com/IgorCSIS/lead-followup/actions"><img src="https://img.shields.io/github/actions/workflow/status/IgorCSIS/lead-followup/deploy.yml?branch=main&label=build&labelColor=070E18&color=F59E0B&style=flat-square" alt="Build status"></a>
+  <img src="https://img.shields.io/badge/engines-TypeScript%20%2B%20Python-F59E0B?labelColor=070E18&style=flat-square" alt="TypeScript and Python engines">
+  <img src="https://img.shields.io/badge/runs-in%20your%20browser-F59E0B?labelColor=070E18&style=flat-square" alt="Runs in your browser">
+  <img src="https://img.shields.io/badge/hosting-%240%20on%20GitHub%20Pages-F59E0B?labelColor=070E18&style=flat-square" alt="Free to host on GitHub Pages">
+  <img src="https://img.shields.io/badge/license-MIT-F59E0B?labelColor=070E18&style=flat-square" alt="MIT licensed">
+</p>
+
 # Lead Follow-up: CSV to same-day SMS and email drafts
 
 A free tool that turns a CSV of leads into a ready-to-send text and email for
@@ -11,9 +19,12 @@ uploaded anywhere.
 
 It drafts, it never sends. A person reads each one and hits copy.
 
-**[Open the tool](https://igorcsis.github.io/lead-followup/)** &nbsp;·&nbsp;
-[The demo site that captures the leads](https://igorcsis.github.io/ridgeview-remodeling-demo/) &nbsp;·&nbsp;
-[MIT licensed](LICENSE)
+**Live demo:** https://igorcsis.github.io/lead-followup/  
+**Stack:** TypeScript and Vite in the browser, with a Python command line
+mirror. No account, no API key, no upload.
+
+The demo site that captures these leads is
+https://igorcsis.github.io/ridgeview-remodeling-demo/
 
 <p align="center">
   <img src="assets/screenshot.png" alt="Eight drafted leads. The first is badged Reply today, showing a 135 of 160 character text message, an email subject and an email body, each with its own copy button." width="880">
@@ -114,6 +125,10 @@ and the other does not, and you find out months later when the demo says
 something different from the tool. So `scripts/check-parity.mjs` runs both
 engines over `public/sample_leads.csv` and compares every field of every draft.
 One character of difference fails the build, and CI runs it on every push.
+
+<p align="center">
+  <img src="assets/parity.svg" alt="One input, public/sample_leads.csv with 8 leads and 9 columns per row, feeds two engines that share no code: the TypeScript src/lib/drafts.ts the browser runs, and the Python tools/lead_followup_drafter.py the terminal runs. A comparator checks 15 fields, 9 lead and 6 draft, across all 8 drafts, and either prints Parity OK or exits 1 with both values printed." width="880">
+</p>
 
 ```
 $ npm run parity
@@ -216,21 +231,29 @@ Then stop talking. The point is not the software. The point is that the lead
 form and the follow-up are one system, and the second half is the half most
 contractors never build.
 
-## What is in the repo
+## Layout
 
 ```
-index.html                       the shell, the static heading, and the no-JS notice
-src/main.ts                      the single-screen UI
-src/lib/drafts.ts                the draft engine, and the source of truth
-src/lib/csv.ts                   parsing, header aliasing, and CSV export
-src/lib/sheet.ts                 reading a connected Google Sheet
-src/lib/ui.ts                    clipboard, downloads, escaping, dates
-tools/lead_followup_drafter.py   the CLI, mirroring the engine
-tools/sheet-endpoint/            the Apps Script that fills the sheet
-tests/                           TypeScript tests
-scripts/check-parity.mjs         proves the two engines agree
-assets/                          logo, banner, and the social card source
-public/sample_leads.csv          eight fictional leads, two of them urgent
+lead-followup/
+├── index.html                         the shell and the no-JS notice
+├── src/
+│   ├── main.ts                        the single-screen UI
+│   └── lib/
+│       ├── drafts.ts                  the draft engine, the source of truth
+│       ├── csv.ts                     parsing, header aliasing, CSV export
+│       ├── sheet.ts                   reading a connected Google Sheet
+│       └── ui.ts                      clipboard, downloads, escaping, dates
+├── tools/
+│   ├── lead_followup_drafter.py       the CLI, mirroring the engine
+│   ├── test_lead_followup_drafter.py  the Python tests
+│   └── sheet-endpoint/                the Apps Script that fills the sheet
+├── tests/                             the TypeScript tests
+├── scripts/
+│   ├── check-parity.mjs               proves the two engines agree
+│   └── make-og-image.mjs              renders the social card to a PNG
+├── assets/                            logo, banner, diagram, social card
+└── public/
+    └── sample_leads.csv               eight fictional leads, two urgent
 ```
 
 Python here follows the Appendix A conventions: snake_case, `Final` on
