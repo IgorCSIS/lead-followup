@@ -120,7 +120,7 @@ $ npm run parity
 Parity OK: 8 drafts identical in TypeScript and Python (2 urgent).
 ```
 
-Around it, 34 TypeScript tests and 38 Python tests. One is worth calling out:
+Around it, 35 TypeScript tests and 39 Python tests. One is worth calling out:
 it builds a draft for every project type crossed with every timeline, using a
 first name long enough to be a worst case, and asserts each text lands inside
 the single-message limit. Carriers split anything longer, which looks careless
